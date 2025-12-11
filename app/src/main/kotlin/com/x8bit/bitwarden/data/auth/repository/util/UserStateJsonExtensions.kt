@@ -71,9 +71,7 @@ fun UserStateJson.toUpdatedUserStateJson(
                     masterPasswordUnlock = syncUserDecryption.masterPasswordUnlock,
                 )
         }
-        ?: profile
-            .userDecryptionOptions
-            ?.copy(masterPasswordUnlock = null)
+        ?: profile.userDecryptionOptions
 
     val updatedProfile = profile
         .copy(

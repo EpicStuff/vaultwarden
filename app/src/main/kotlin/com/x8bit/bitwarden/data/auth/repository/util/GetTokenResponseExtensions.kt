@@ -21,6 +21,30 @@ fun GetTokenResponseJson.Success.toUserState(
     val jwtTokenData = requireNotNull(parseJwtTokenDataOrNull(jwtToken = this.accessToken))
     val userId = jwtTokenData.userId
 
+    val mergedUserDecryptionOptions = this
+        .userDecryptionOptions
+        ?.let { responseOptions ->
+            val previousOptions = previousUserState
+                ?.accounts
+                ?.get(userId)
+                ?.profile
+                ?.userDecryptionOptions
+
+            previousOptions
+                ?.let { previous ->
+                    responseOptions.copy(
+                        masterPasswordUnlock = responseOptions.masterPasswordUnlock
+                            ?: previous.masterPasswordUnlock,
+                    )
+                }
+                ?: responseOptions
+        }
+        ?: previousUserState
+            ?.accounts
+            ?.get(userId)
+            ?.profile
+            ?.userDecryptionOptions
+
     val account = AccountJson(
         profile = AccountJson.Profile(
             userId = userId,
@@ -37,7 +61,7 @@ fun GetTokenResponseJson.Success.toUserState(
             kdfIterations = this.kdfIterations,
             kdfMemory = this.kdfMemory,
             kdfParallelism = this.kdfParallelism,
-            userDecryptionOptions = this.userDecryptionOptions,
+            userDecryptionOptions = mergedUserDecryptionOptions,
             creationDate = null,
         ),
         settings = AccountJson.Settings(

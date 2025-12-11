@@ -624,11 +624,12 @@ class VaultRepositoryTest {
 
     @Suppress("MaxLineLength")
     @Test
-    fun `unlockVaultWithMasterPassword without masterPasswordUnlock data should return InvalidStateError`() =
+    fun `unlockVaultWithMasterPassword without masterPasswordUnlock data should fall back to password unlock`() =
         runTest {
             val userId = "mockId-1"
             val masterPassword = "mockPassword-1"
             val userKey = "mockUserKey-1"
+            val vaultUnlockResult = VaultUnlockResult.Success
             val userState = MOCK_USER_STATE.copy(
                 accounts = mapOf(
                     "mockId-1" to MOCK_ACCOUNT.copy(
@@ -641,14 +642,35 @@ class VaultRepositoryTest {
             fakeAuthDiskSource.userState = userState
             fakeAuthDiskSource.storePrivateKey(userId = userId, privateKey = "mockPrivateKey-1")
             fakeAuthDiskSource.storeUserKey(userId = userId, userKey = userKey)
+            coEvery {
+                vaultLockManager.unlockVault(
+                    userId = userId,
+                    email = "email",
+                    kdf = MOCK_PROFILE.toSdkParams(),
+                    privateKey = "mockPrivateKey-1",
+                    signingKey = null,
+                    securityState = null,
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(password = masterPassword),
+                    organizationKeys = null,
+                )
+            } returns vaultUnlockResult
 
             val result = vaultRepository.unlockVaultWithMasterPassword(
                 masterPassword = masterPassword,
             )
 
-            assertTrue(result is VaultUnlockResult.InvalidStateError)
-            coVerify(exactly = 0) {
-                vaultLockManager.unlockVault(any(), any(), any(), any(), any(), any(), any(), any())
+            assertEquals(vaultUnlockResult, result)
+            coVerify {
+                vaultLockManager.unlockVault(
+                    userId = userId,
+                    email = "email",
+                    kdf = MOCK_PROFILE.toSdkParams(),
+                    privateKey = "mockPrivateKey-1",
+                    signingKey = null,
+                    securityState = null,
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(password = masterPassword),
+                    organizationKeys = null,
+                )
             }
         }
 

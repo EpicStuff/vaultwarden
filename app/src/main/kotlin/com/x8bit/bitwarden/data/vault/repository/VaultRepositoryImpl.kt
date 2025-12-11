@@ -343,7 +343,7 @@ class VaultRepositoryImpl(
             ?: return VaultUnlockResult.InvalidStateError(error = NoActiveUserException())
 
         val activeAccount = authDiskSource.userState?.activeAccount
-        val masterPasswordUnlock = activeAccount
+        val initUserCryptoMethod = activeAccount
             ?.profile
             ?.userDecryptionOptions
             ?.masterPasswordUnlock
@@ -356,13 +356,13 @@ class VaultRepositoryImpl(
                     ?.userDecryptionOptions
                     ?.masterPasswordUnlock
             }
-            ?: return VaultUnlockResult.InvalidStateError(
-                error = MissingPropertyException("MasterPasswordUnlock data"),
-            )
-        val initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
-            password = masterPassword,
-            masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
-        )
+            ?.let { masterPasswordUnlock ->
+                InitUserCryptoMethod.MasterPasswordUnlock(
+                    password = masterPassword,
+                    masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
+                )
+            }
+            ?: InitUserCryptoMethod.Password(password = masterPassword)
         return this
             .unlockVaultForUser(
                 userId = userId,

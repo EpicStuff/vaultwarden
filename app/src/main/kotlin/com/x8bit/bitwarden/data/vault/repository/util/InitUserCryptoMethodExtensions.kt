@@ -17,7 +17,8 @@ val InitUserCryptoMethod.logTag: String
         is InitUserCryptoMethod.MasterPasswordUnlock -> "Master Password Unlock"
         is InitUserCryptoMethod.Password -> {
             // PM-27290: InitUserCryptoMethod.Password will be removed from the SDK in a future
-            // release. This else branch can be cleaned up afterwards.
-            throw IllegalArgumentException("Unsupported InitUserCryptoMethod: $this")
+            // release. We still map it here so callers can log the method when legacy unlock data
+            // is missing.
+            "Password"
         }
     }

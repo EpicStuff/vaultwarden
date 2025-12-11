@@ -540,6 +540,7 @@ class VaultRepositoryTest {
                     securityState = null,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = "mockPassword-1",
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MasterPasswordUnlockData(
                             kdf = MOCK_PROFILE.toSdkParams(),
                             masterKeyWrappedUserKey = "mockKey-1",
@@ -594,6 +595,7 @@ class VaultRepositoryTest {
                     securityState = null,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = masterPassword,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = masterPasswordUnlockData,
                     ),
                     organizationKeys = null,
@@ -615,6 +617,7 @@ class VaultRepositoryTest {
                     securityState = null,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = masterPassword,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = masterPasswordUnlockData,
                     ),
                     organizationKeys = null,
@@ -650,7 +653,10 @@ class VaultRepositoryTest {
                     privateKey = "mockPrivateKey-1",
                     signingKey = null,
                     securityState = null,
-                    initUserCryptoMethod = InitUserCryptoMethod.Password(password = masterPassword),
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
+                        password = masterPassword,
+                        userKey = "mockUserKey",
+                    ),
                     organizationKeys = null,
                 )
             } returns vaultUnlockResult
@@ -668,7 +674,10 @@ class VaultRepositoryTest {
                     privateKey = "mockPrivateKey-1",
                     signingKey = null,
                     securityState = null,
-                    initUserCryptoMethod = InitUserCryptoMethod.Password(password = masterPassword),
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
+                        password = masterPassword,
+                        userKey = "mockUserKey",
+                    ),
                     organizationKeys = null,
                 )
             }
@@ -700,6 +709,7 @@ class VaultRepositoryTest {
                     securityState = null,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = "mockPassword-1",
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MasterPasswordUnlockData(
                             kdf = MOCK_PROFILE.toSdkParams(),
                             masterKeyWrappedUserKey = "mockKey-1",
@@ -1560,6 +1570,7 @@ class VaultRepositoryTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = mockMasterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MasterPasswordUnlockData(
                         kdf = MOCK_PROFILE.toSdkParams(),
                         masterKeyWrappedUserKey = "mockKey-1",

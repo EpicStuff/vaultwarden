@@ -924,6 +924,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -959,6 +960,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -993,6 +995,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1028,6 +1031,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1072,6 +1076,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1108,6 +1113,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1143,6 +1149,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1169,6 +1176,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1193,6 +1201,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1221,6 +1230,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1254,6 +1264,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1278,6 +1289,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1313,6 +1325,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1338,6 +1351,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1362,6 +1376,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1390,6 +1405,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1422,6 +1438,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1446,6 +1463,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1480,6 +1498,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1512,6 +1531,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1543,6 +1563,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1652,6 +1673,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1683,6 +1705,7 @@ class VaultLockManagerTest {
                 securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                 ),
                 organizationKeys = organizationKeys,
@@ -1709,6 +1732,7 @@ class VaultLockManagerTest {
                         privateKey = privateKey,
                         method = InitUserCryptoMethod.MasterPasswordUnlock(
                             password = masterPassword,
+                            userKey = "mockUserKey",
                             masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                         ),
                         signingKey = null,
@@ -1735,6 +1759,7 @@ class VaultLockManagerTest {
             val organizationKeys = mapOf("orgId1" to "orgKey1")
             val initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                 password = masterPassword,
+                userKey = "mockUserKey",
                 masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
             )
             coEvery {
@@ -1858,6 +1883,7 @@ class VaultLockManagerTest {
                     privateKey = privateKey,
                     method = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = masterPassword,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                     ),
                     signingKey = null,
@@ -1878,6 +1904,7 @@ class VaultLockManagerTest {
             securityState = null,
             initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                 password = masterPassword,
+                userKey = "mockUserKey",
                 masterPasswordUnlock = MasterPasswordUnlockData(
                     kdf = kdf,
                     masterKeyWrappedUserKey = userKey,
@@ -1911,6 +1938,7 @@ class VaultLockManagerTest {
                     privateKey = privateKey,
                     method = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = masterPassword,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                     ),
                     signingKey = null,
@@ -1934,6 +1962,7 @@ class VaultLockManagerTest {
             securityState = null,
             initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                 password = masterPassword,
+                userKey = "mockUserKey",
                 masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
             ),
             organizationKeys = organizationKeys,
@@ -1950,6 +1979,7 @@ class VaultLockManagerTest {
                     privateKey = privateKey,
                     method = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = masterPassword,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK_DATA,
                     ),
                     signingKey = null,

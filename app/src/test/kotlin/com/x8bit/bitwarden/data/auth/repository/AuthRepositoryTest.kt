@@ -420,6 +420,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -495,6 +496,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -1823,6 +1825,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -1879,6 +1882,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -1932,6 +1936,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -1995,6 +2000,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -2137,6 +2143,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -2203,6 +2210,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -2331,6 +2339,7 @@ class AuthRepositoryTest {
                     ?.securityState,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = PASSWORD,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                 ),
                 organizationKeys = null,
@@ -2433,6 +2442,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -2502,6 +2512,7 @@ class AuthRepositoryTest {
                     ?.securityState,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = PASSWORD,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                 ),
                 organizationKeys = null,
@@ -2555,6 +2566,7 @@ class AuthRepositoryTest {
                     ?.securityState,
                 initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                     password = PASSWORD,
+                    userKey = "mockUserKey",
                     masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                 ),
                 organizationKeys = null,
@@ -6829,6 +6841,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,
@@ -6902,6 +6915,7 @@ class AuthRepositoryTest {
                         ?.securityState,
                     initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
                         password = PASSWORD,
+                        userKey = "mockUserKey",
                         masterPasswordUnlock = MOCK_MASTER_PASSWORD_UNLOCK,
                     ),
                     organizationKeys = null,

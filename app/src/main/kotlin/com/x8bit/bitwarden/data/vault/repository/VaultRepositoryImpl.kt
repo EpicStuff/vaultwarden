@@ -342,6 +342,11 @@ class VaultRepositoryImpl(
         val userId = activeUserId
             ?: return VaultUnlockResult.InvalidStateError(error = NoActiveUserException())
 
+        val userKey = authDiskSource.getUserKey(userId = userId)
+            ?: return VaultUnlockResult.InvalidStateError(
+                error = MissingPropertyException("User key"),
+            )
+
         val activeAccount = authDiskSource.userState?.activeAccount
         val initUserCryptoMethod = activeAccount
             ?.profile
@@ -359,10 +364,14 @@ class VaultRepositoryImpl(
             ?.let { masterPasswordUnlock ->
                 InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
+                    userKey = userKey,
                     masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
                 )
             }
-            ?: InitUserCryptoMethod.Password(password = masterPassword)
+            ?: InitUserCryptoMethod.Password(
+                password = masterPassword,
+                userKey = userKey,
+            )
         return this
             .unlockVaultForUser(
                 userId = userId,

@@ -110,6 +110,7 @@ class VaultRepositoryTest {
         every { domainsStateFlow } returns mutableDomainsStateFlow
         every { foldersStateFlow } returns mutableFoldersStateFlow
         every { sendDataStateFlow } returns mutableSendDataStateFlow
+        coEvery { syncForResult(any()) } returns SyncVaultDataResult.Success(itemsAvailable = true)
     }
     private val credentialExchangeImportManager: CredentialExchangeImportManager = mockk()
     private val pinProtectedUserKeyManager: PinProtectedUserKeyManager = mockk {

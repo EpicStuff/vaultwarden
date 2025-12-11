@@ -347,6 +347,15 @@ class VaultRepositoryImpl(
             ?.profile
             ?.userDecryptionOptions
             ?.masterPasswordUnlock
+            ?: run {
+                vaultSyncManager.syncForResult(forced = true)
+                authDiskSource.userState
+                    ?.accounts
+                    ?.get(userId)
+                    ?.profile
+                    ?.userDecryptionOptions
+                    ?.masterPasswordUnlock
+            }
             ?: return VaultUnlockResult.InvalidStateError(
                 error = MissingPropertyException("MasterPasswordUnlock data"),
             )

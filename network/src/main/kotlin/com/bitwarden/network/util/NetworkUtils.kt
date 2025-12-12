@@ -5,6 +5,7 @@ import java.net.UnknownHostException
 import java.nio.charset.Charset
 import java.security.cert.CertPathValidatorException
 import java.util.Base64
+import javax.net.ssl.SSLException
 import javax.net.ssl.SSLHandshakeException
 
 /**
@@ -51,4 +52,13 @@ fun Throwable?.isSslHandShakeError(): Boolean {
     return this is SSLHandshakeException ||
         this is CertPathValidatorException ||
         this?.cause?.isSslHandShakeError() ?: false
+}
+
+/**
+ * Returns true if the throwable represents a TLS packet header parsing error.
+ */
+fun Throwable?.isTlsPacketHeaderError(): Boolean {
+    return this is SSLException &&
+        this.message?.contains("Unable to parse TLS packet header", ignoreCase = true) == true ||
+        this?.cause?.isTlsPacketHeaderError() ?: false
 }

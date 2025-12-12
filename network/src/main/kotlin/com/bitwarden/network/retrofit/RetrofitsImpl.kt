@@ -5,6 +5,7 @@ import com.bitwarden.network.interceptor.AuthTokenManager
 import com.bitwarden.network.interceptor.BaseUrlInterceptor
 import com.bitwarden.network.interceptor.BaseUrlInterceptors
 import com.bitwarden.network.interceptor.HeadersInterceptor
+import com.bitwarden.network.interceptor.TlsErrorRetryInterceptor
 import com.bitwarden.network.ssl.BitwardenX509ExtendedKeyManager
 import com.bitwarden.network.ssl.CertificateProvider
 import com.bitwarden.network.util.HEADER_KEY_AUTHORIZATION
@@ -96,6 +97,7 @@ internal class RetrofitsImpl(
     }
 
     private val baseOkHttpClient: OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(TlsErrorRetryInterceptor())
         .addInterceptor(headersInterceptor)
         .configureSsl()
         .build()

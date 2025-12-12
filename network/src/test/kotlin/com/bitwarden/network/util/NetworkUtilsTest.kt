@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertNull
 import java.net.UnknownHostException
 import java.security.cert.CertPathValidatorException
+import javax.net.ssl.SSLException
 import javax.net.ssl.SSLHandshakeException
 
 class NetworkUtilsTest {
@@ -90,6 +91,22 @@ class NetworkUtilsTest {
         assertEquals(
             false,
             IllegalStateException().isSslHandShakeError(),
+        )
+    }
+
+    @Test
+    fun `isTlsPacketHeaderError should return true for TLS packet header exception`() {
+        assertEquals(
+            true,
+            SSLException("Unable to parse TLS packet header").isTlsPacketHeaderError(),
+        )
+    }
+
+    @Test
+    fun `isTlsPacketHeaderError should return false for other SSL exception`() {
+        assertEquals(
+            false,
+            SSLException("fatal error").isTlsPacketHeaderError(),
         )
     }
 }

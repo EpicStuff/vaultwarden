@@ -103,6 +103,14 @@ class NetworkUtilsTest {
     }
 
     @Test
+    fun `isTlsPacketHeaderError should return true when TLS packet header exception is nested`() {
+        assertEquals(
+            true,
+            IllegalStateException(SSLException("Unable to parse TLS packet header")).isTlsPacketHeaderError(),
+        )
+    }
+
+    @Test
     fun `isTlsPacketHeaderError should return false for other SSL exception`() {
         assertEquals(
             false,

@@ -7,6 +7,7 @@ import okhttp3.Response
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertThrows
 import org.junit.jupiter.api.Test
+import java.io.IOException
 import javax.net.ssl.SSLException
 import io.mockk.every
 import io.mockk.mockk
@@ -52,5 +53,27 @@ class TlsErrorRetryInterceptorTest {
         }
 
         verify(exactly = 1) { chain.proceed(request) }
+    }
+
+    @Test
+    fun `intercept should retry when TLS packet header error is wrapped in IOException`() {
+        val request = Request.Builder()
+            .url("https://example.com")
+            .build()
+        val expectedResponse = Response.Builder()
+            .code(200)
+            .message("OK")
+            .protocol(Protocol.HTTP_1_1)
+            .request(request)
+            .build()
+        val chain = mockk<Interceptor.Chain> {
+            every { request() } returns request
+            every { proceed(request) } throws IOException(SSLException("Unable to parse TLS packet header")) andThen expectedResponse
+        }
+
+        val result = interceptor.intercept(chain)
+
+        assertEquals(expectedResponse, result)
+        verify(exactly = 2) { chain.proceed(request) }
     }
 }

@@ -58,7 +58,10 @@ fun Throwable?.isSslHandShakeError(): Boolean {
  * Returns true if the throwable represents a TLS packet header parsing error.
  */
 fun Throwable?.isTlsPacketHeaderError(): Boolean {
-    return this is SSLException &&
-        this.message?.contains("Unable to parse TLS packet header", ignoreCase = true) == true ||
-        this?.cause?.isTlsPacketHeaderError() ?: false
+    return when {
+        this is SSLException &&
+            this.message?.contains("Unable to parse TLS packet header", ignoreCase = true) == true -> true
+
+        else -> this?.cause?.isTlsPacketHeaderError() ?: false
+    }
 }

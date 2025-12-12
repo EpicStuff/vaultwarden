@@ -2,6 +2,8 @@ package com.x8bit.bitwarden.data.auth.repository.util
 
 import com.bitwarden.data.datasource.disk.model.EnvironmentUrlDataJson
 import com.bitwarden.network.model.GetTokenResponseJson
+import com.bitwarden.network.model.KdfJson
+import com.bitwarden.network.model.MasterPasswordUnlockDataJson
 import com.bitwarden.network.util.parseJwtTokenDataOrNull
 import com.x8bit.bitwarden.data.auth.datasource.disk.model.AccountJson
 import com.x8bit.bitwarden.data.auth.datasource.disk.model.ForcePasswordResetReason
@@ -20,6 +22,20 @@ fun GetTokenResponseJson.Success.toUserState(
 ): UserStateJson {
     val jwtTokenData = requireNotNull(parseJwtTokenDataOrNull(jwtToken = this.accessToken))
     val userId = jwtTokenData.userId
+    val masterPasswordUnlock = this.masterPasswordUnlockOrFallback(email = jwtTokenData.email)
+    val userDecryptionOptions = this
+        .userDecryptionOptions
+        ?.copy(masterPasswordUnlock = masterPasswordUnlock)
+        ?: masterPasswordUnlock?.let {
+            // HTTP logins can omit the MasterPasswordUnlock payload; synthesize it so initial
+            // unlock works and the data is cached locally.
+            com.bitwarden.network.model.UserDecryptionOptionsJson(
+                hasMasterPassword = true,
+                masterPasswordUnlock = it,
+                trustedDeviceUserDecryptionOptions = null,
+                keyConnectorUserDecryptionOptions = null,
+            )
+        }
 
     val account = AccountJson(
         profile = AccountJson.Profile(
@@ -37,7 +53,7 @@ fun GetTokenResponseJson.Success.toUserState(
             kdfIterations = this.kdfIterations,
             kdfMemory = this.kdfMemory,
             kdfParallelism = this.kdfParallelism,
-            userDecryptionOptions = this.userDecryptionOptions,
+            userDecryptionOptions = userDecryptionOptions,
             creationDate = null,
         ),
         settings = AccountJson.Settings(
@@ -60,6 +76,34 @@ fun GetTokenResponseJson.Success.toUserState(
             activeUserId = userId,
             accounts = mapOf(userId to account),
         )
+}
+
+/**
+ * Returns the server-provided [MasterPasswordUnlockDataJson] or reconstructs it when the server
+ * omits the payload (e.g., on HTTP) but still supplies the wrapped user key and KDF settings.
+ */
+fun GetTokenResponseJson.Success.masterPasswordUnlockOrFallback(
+    email: String,
+): MasterPasswordUnlockDataJson? {
+    val masterPasswordUnlock = this.userDecryptionOptions?.masterPasswordUnlock
+    if (masterPasswordUnlock != null) return masterPasswordUnlock
+
+    val hasMasterPassword = this.userDecryptionOptions?.hasMasterPassword ?: true
+    if (!hasMasterPassword) return null
+
+    val masterKeyWrappedUserKey = this.key ?: return null
+    val iterations = this.kdfIterations ?: return null
+
+    return MasterPasswordUnlockDataJson(
+        salt = email,
+        kdf = KdfJson(
+            kdfType = this.kdfType,
+            iterations = iterations,
+            memory = this.kdfMemory,
+            parallelism = this.kdfParallelism,
+        ),
+        masterKeyWrappedUserKey = masterKeyWrappedUserKey,
+    )
 }
 
 /**

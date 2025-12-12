@@ -19,6 +19,8 @@ import com.bitwarden.vault.CipherListViewType
 import com.bitwarden.vault.CipherType
 import com.bitwarden.vault.CipherView
 import com.bitwarden.vault.FolderView
+import com.bitwarden.network.model.KdfJson
+import com.bitwarden.network.model.MasterPasswordUnlockDataJson
 import com.x8bit.bitwarden.data.auth.datasource.disk.AuthDiskSource
 import com.x8bit.bitwarden.data.auth.repository.util.toSdkParams
 import com.x8bit.bitwarden.data.autofill.util.login
@@ -356,6 +358,14 @@ class VaultRepositoryImpl(
                     ?.userDecryptionOptions
                     ?.masterPasswordUnlock
             }
+            ?: fallbackMasterPasswordUnlockData(userId = userId)
+                ?.also {
+                    Timber.w(
+                        "MasterPasswordUnlock missing from server response; constructing fallback from " +
+                            "local KDF settings and wrapped user key. If possible, enable HTTPS so the " +
+                            "server returns this payload.",
+                    )
+                }
             ?: return VaultUnlockResult.InvalidStateError(
                 error = MissingPropertyException("MasterPasswordUnlock data"),
             )
@@ -557,6 +567,28 @@ class VaultRepositoryImpl(
             securityState = securityState,
             initUserCryptoMethod = initUserCryptoMethod,
             organizationKeys = organizationKeys,
+        )
+    }
+
+    private fun fallbackMasterPasswordUnlockData(
+        userId: String,
+    ): MasterPasswordUnlockDataJson? {
+        val account = authDiskSource.userState?.accounts?.get(userId) ?: return null
+        val masterKeyWrappedUserKey = authDiskSource.getUserKey(userId = userId) ?: return null
+        val kdf = account.profile.kdfType?.let { kdfType ->
+            val iterations = account.profile.kdfIterations ?: return null
+            KdfJson(
+                kdfType = kdfType,
+                iterations = iterations,
+                memory = account.profile.kdfMemory,
+                parallelism = account.profile.kdfParallelism,
+            )
+        } ?: return null
+
+        return MasterPasswordUnlockDataJson(
+            salt = account.profile.email,
+            kdf = kdf,
+            masterKeyWrappedUserKey = masterKeyWrappedUserKey,
         )
     }
 

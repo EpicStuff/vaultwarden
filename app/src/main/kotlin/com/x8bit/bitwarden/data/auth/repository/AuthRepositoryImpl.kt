@@ -94,6 +94,7 @@ import com.x8bit.bitwarden.data.auth.repository.util.activeUserIdChangesFlow
 import com.x8bit.bitwarden.data.auth.repository.util.policyInformation
 import com.x8bit.bitwarden.data.auth.repository.util.toRemovedPasswordUserStateJson
 import com.x8bit.bitwarden.data.auth.repository.util.toSdkParams
+import com.x8bit.bitwarden.data.auth.repository.util.masterPasswordUnlockOrFallback
 import com.x8bit.bitwarden.data.auth.repository.util.toUserState
 import com.x8bit.bitwarden.data.auth.repository.util.toUserStateJsonWithPassword
 import com.x8bit.bitwarden.data.auth.repository.util.userSwitchingChangesFlow
@@ -1888,8 +1889,7 @@ class AuthRepositoryImpl(
         val privateKey = loginResponse.privateKeyOrNull() ?: return null
 
         val masterPasswordUnlock = loginResponse
-            .userDecryptionOptions
-            ?.masterPasswordUnlock
+            .masterPasswordUnlockOrFallback(email = profile.email)
             ?: return null
         val initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
             password = masterPassword,

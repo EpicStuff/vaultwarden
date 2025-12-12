@@ -1894,7 +1894,6 @@ class AuthRepositoryImpl(
             ?: return null
         val initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
             password = masterPassword,
-            userKey = userKey,
             masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
         )
 

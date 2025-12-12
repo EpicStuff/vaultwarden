@@ -364,7 +364,6 @@ class VaultRepositoryImpl(
             ?.let { masterPasswordUnlock ->
                 InitUserCryptoMethod.MasterPasswordUnlock(
                     password = masterPassword,
-                    userKey = userKey,
                     masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
                 )
             }

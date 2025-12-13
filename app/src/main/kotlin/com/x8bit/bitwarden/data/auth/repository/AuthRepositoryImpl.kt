@@ -1886,15 +1886,21 @@ class AuthRepositoryImpl(
         // Attempt to unlock the vault with password if possible.
         val masterPassword = password ?: return null
         val privateKey = loginResponse.privateKeyOrNull() ?: return null
+        val key = loginResponse.key ?: return null
 
-        val masterPasswordUnlock = loginResponse
+        val initUserCryptoMethod = loginResponse
             .userDecryptionOptions
             ?.masterPasswordUnlock
-            ?: return null
-        val initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
-            password = masterPassword,
-            masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
-        )
+            ?.let { masterPasswordUnlock ->
+                InitUserCryptoMethod.MasterPasswordUnlock(
+                    password = masterPassword,
+                    masterPasswordUnlock = masterPasswordUnlock.toSdkMasterPasswordUnlock(),
+                )
+            }
+            ?: InitUserCryptoMethod.Password(
+                password = masterPassword,
+                userKey = key,
+            )
 
         return unlockVault(
             accountProfile = profile,

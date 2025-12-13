@@ -259,19 +259,29 @@ class VaultLockManagerImpl(
         kdf: Kdf,
         userId: String,
     ) {
-        (initUserCryptoMethod as? InitUserCryptoMethod.MasterPasswordUnlock)?.let {
+        if (initUserCryptoMethod is InitUserCryptoMethod.Password ||
+            initUserCryptoMethod is InitUserCryptoMethod.MasterPasswordUnlock
+        ) {
+            val password = when (initUserCryptoMethod) {
+                is InitUserCryptoMethod.Password -> initUserCryptoMethod.password
+                is InitUserCryptoMethod.MasterPasswordUnlock -> initUserCryptoMethod.password
+                else -> throw IllegalStateException(
+                    "Invalid initUserCryptoMethod ${initUserCryptoMethod.logTag}.",
+                )
+            }
+
             // Save the master password hash.
             authSdkSource
                 .hashPassword(
                     email = email,
-                    password = initUserCryptoMethod.password,
+                    password = password,
                     kdf = kdf,
                     purpose = HashPurpose.LOCAL_AUTHORIZATION,
                 )
-                .onSuccess {
+                .onSuccess { passwordHash ->
                     authDiskSource.storeMasterPasswordHash(
                         userId = userId,
-                        passwordHash = it,
+                        passwordHash = passwordHash,
                     )
                 }
         }
@@ -703,15 +713,15 @@ class VaultLockManagerImpl(
 
     private suspend fun updateKdfIfNeeded(initUserCryptoMethod: InitUserCryptoMethod) {
         val password = when (initUserCryptoMethod) {
+            is InitUserCryptoMethod.Password -> initUserCryptoMethod.password
             is InitUserCryptoMethod.MasterPasswordUnlock -> initUserCryptoMethod.password
             is InitUserCryptoMethod.AuthRequest,
             is InitUserCryptoMethod.DecryptedKey,
             is InitUserCryptoMethod.DeviceKey,
             is InitUserCryptoMethod.KeyConnector,
-            is InitUserCryptoMethod.Password,
             is InitUserCryptoMethod.Pin,
             is InitUserCryptoMethod.PinEnvelope,
-                -> return
+            -> return
         }
 
         kdfManager

@@ -537,13 +537,9 @@ class VaultRepositoryTest {
                     privateKey = "mockPrivateKey-1",
                     signingKey = null,
                     securityState = null,
-                    initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
                         password = "mockPassword-1",
-                        masterPasswordUnlock = MasterPasswordUnlockData(
-                            kdf = MOCK_PROFILE.toSdkParams(),
-                            masterKeyWrappedUserKey = "mockKey-1",
-                            salt = "mockSalt-1",
-                        ),
+                        userKey = "mockKey-1",
                     ),
                     organizationKeys = createMockOrganizationKeys(number = 1),
                 )
@@ -623,7 +619,7 @@ class VaultRepositoryTest {
 
     @Suppress("MaxLineLength")
     @Test
-    fun `unlockVaultWithMasterPassword without masterPasswordUnlock data should return InvalidStateError`() =
+    fun `unlockVaultWithMasterPassword without masterPasswordUnlock data should use Password method`() =
         runTest {
             val userId = "mockId-1"
             val masterPassword = "mockPassword-1"
@@ -641,13 +637,41 @@ class VaultRepositoryTest {
             fakeAuthDiskSource.storePrivateKey(userId = userId, privateKey = "mockPrivateKey-1")
             fakeAuthDiskSource.storeUserKey(userId = userId, userKey = userKey)
 
+            coEvery {
+                vaultLockManager.unlockVault(
+                    userId = userId,
+                    email = "email",
+                    kdf = MOCK_PROFILE.toSdkParams(),
+                    privateKey = "mockPrivateKey-1",
+                    signingKey = null,
+                    securityState = null,
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
+                        password = masterPassword,
+                        userKey = userKey,
+                    ),
+                    organizationKeys = null,
+                )
+            } returns VaultUnlockResult.Success
+
             val result = vaultRepository.unlockVaultWithMasterPassword(
                 masterPassword = masterPassword,
             )
 
-            assertTrue(result is VaultUnlockResult.InvalidStateError)
-            coVerify(exactly = 0) {
-                vaultLockManager.unlockVault(any(), any(), any(), any(), any(), any(), any(), any())
+            assertEquals(VaultUnlockResult.Success, result)
+            coVerify {
+                vaultLockManager.unlockVault(
+                    userId = userId,
+                    email = "email",
+                    kdf = MOCK_PROFILE.toSdkParams(),
+                    privateKey = "mockPrivateKey-1",
+                    signingKey = null,
+                    securityState = null,
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
+                        password = masterPassword,
+                        userKey = userKey,
+                    ),
+                    organizationKeys = null,
+                )
             }
         }
 
@@ -675,13 +699,9 @@ class VaultRepositoryTest {
                     privateKey = "mockPrivateKey-1",
                     signingKey = null,
                     securityState = null,
-                    initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
+                    initUserCryptoMethod = InitUserCryptoMethod.Password(
                         password = "mockPassword-1",
-                        masterPasswordUnlock = MasterPasswordUnlockData(
-                            kdf = MOCK_PROFILE.toSdkParams(),
-                            masterKeyWrappedUserKey = "mockKey-1",
-                            salt = "mockSalt-1",
-                        ),
+                        userKey = "mockKey-1",
                     ),
                     organizationKeys = createMockOrganizationKeys(number = 1),
                 )
@@ -1535,13 +1555,9 @@ class VaultRepositoryTest {
                 privateKey = "mockPrivateKey-1",
                 signingKey = null,
                 securityState = null,
-                initUserCryptoMethod = InitUserCryptoMethod.MasterPasswordUnlock(
+                initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = mockMasterPassword,
-                    masterPasswordUnlock = MasterPasswordUnlockData(
-                        kdf = MOCK_PROFILE.toSdkParams(),
-                        masterKeyWrappedUserKey = "mockKey-1",
-                        salt = "mockSalt-1",
-                    ),
+                    userKey = "mockKey-1",
                 ),
                 organizationKeys = createMockOrganizationKeys(number = 1),
             )
@@ -1584,7 +1600,7 @@ class VaultRepositoryTest {
     //endregion Helper functions
 }
 
-private val MOCK_BASE_PROFILE = AccountJson.Profile(
+private val MOCK_PROFILE = AccountJson.Profile(
     userId = "mockId-1",
     email = "email",
     isEmailVerified = true,
@@ -1601,19 +1617,6 @@ private val MOCK_BASE_PROFILE = AccountJson.Profile(
     userDecryptionOptions = null,
     isTwoFactorEnabled = false,
     creationDate = ZonedDateTime.parse("2024-09-13T01:00:00.00Z"),
-)
-
-private val MOCK_PROFILE = MOCK_BASE_PROFILE.copy(
-    userDecryptionOptions = UserDecryptionOptionsJson(
-        hasMasterPassword = true,
-        trustedDeviceUserDecryptionOptions = null,
-        keyConnectorUserDecryptionOptions = null,
-        masterPasswordUnlock = MasterPasswordUnlockDataJson(
-            kdf = MOCK_BASE_PROFILE.toSdkParams().toKdfRequestModel(),
-            masterKeyWrappedUserKey = "mockKey-1",
-            salt = "mockSalt-1",
-        ),
-    ),
 )
 
 private val MOCK_ACCOUNT = AccountJson(

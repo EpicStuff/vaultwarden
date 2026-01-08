@@ -41,7 +41,7 @@ import com.bitwarden.ui.platform.components.button.BitwardenFilledButton
 import com.bitwarden.ui.platform.components.button.BitwardenOutlinedButton
 import com.bitwarden.ui.platform.components.dialog.BitwardenBasicDialog
 import com.bitwarden.ui.platform.components.dialog.BitwardenLoadingDialog
-import com.bitwarden.ui.platform.components.field.BitwardenPasswordField
+import com.bitwarden.ui.platform.components.field.BitwardenTextField
 import com.bitwarden.ui.platform.components.model.CardStyle
 import com.bitwarden.ui.platform.components.scaffold.BitwardenScaffold
 import com.bitwarden.ui.platform.components.snackbar.BitwardenSnackbarHost
@@ -102,11 +102,19 @@ fun TwoFactorLoginScreen(
             }
 
             is TwoFactorLoginEvent.NavigateToDuo -> {
-                intentManager.startAuthTab(uri = event.uri, launcher = authTabLaunchers.duo)
+                intentManager.startAuthTab(
+                    uri = event.uri,
+                    redirectScheme = event.scheme,
+                    launcher = authTabLaunchers.duo,
+                )
             }
 
             is TwoFactorLoginEvent.NavigateToWebAuth -> {
-                intentManager.startAuthTab(uri = event.uri, launcher = authTabLaunchers.webAuthn)
+                intentManager.startAuthTab(
+                    uri = event.uri,
+                    redirectScheme = event.scheme,
+                    launcher = authTabLaunchers.webAuthn,
+                )
             }
 
             is TwoFactorLoginEvent.ShowSnackbar -> snackbarHostState.showSnackbar(event.data)
@@ -263,7 +271,7 @@ private fun TwoFactorLoginScreenContent(
 
         Spacer(modifier = Modifier.height(12.dp))
         if (state.shouldShowCodeInput) {
-            BitwardenPasswordField(
+            BitwardenTextField(
                 value = state.codeInput,
                 onValueChange = onCodeInputChange,
                 label = stringResource(id = BitwardenString.verification_code),

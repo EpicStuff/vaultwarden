@@ -384,25 +384,31 @@ class VaultSdkSourceTest {
         }
 
     @Test
-    fun `validatePin should call SDK and return a Result with the correct data`() =
+    fun `validatePinUserKey should call SDK and return a Result with the correct data`() =
         runBlocking {
             val userId = "userId"
             val pin = "pin"
             val pinProtectedUserKey = "pinProtectedUserKey"
             val expectedResult = true
             coEvery {
-                clientAuth.validatePin(pin = pin, pinProtectedUserKey = pinProtectedUserKey)
+                clientAuth.validatePinProtectedUserKeyEnvelope(
+                    pin = pin,
+                    pinProtectedUserKeyEnvelope = pinProtectedUserKey,
+                )
             } returns expectedResult
 
-            val result = vaultSdkSource.validatePin(
+            val result = vaultSdkSource.validatePinUserKey(
                 userId = userId,
                 pin = pin,
-                pinProtectedUserKey = pinProtectedUserKey,
+                pinProtectedUserKeyEnvelope = pinProtectedUserKey,
             )
 
             assertEquals(expectedResult.asSuccess(), result)
             coVerify(exactly = 1) {
-                clientAuth.validatePin(pin = pin, pinProtectedUserKey = pinProtectedUserKey)
+                clientAuth.validatePinProtectedUserKeyEnvelope(
+                    pin = pin,
+                    pinProtectedUserKeyEnvelope = pinProtectedUserKey,
+                )
                 sdkClientManager.getOrCreateClient(userId = userId)
             }
         }
@@ -1394,18 +1400,24 @@ class VaultSdkSourceTest {
         val userId = "userId"
         val fido2CredentialStore: Fido2CredentialStore = mockk()
         val relyingPartyId = "relyingPartyId"
+        val userHandle = "mockUserHandle"
         val mockAutofillView = Fido2CredentialAutofillView(
             credentialId = byteArrayOf(0),
             cipherId = "mockCipherId",
             rpId = "mockRpId",
             userNameForUi = "mockUserNameForUi",
-            userHandle = "mockUserHandle".toByteArray(),
+            userHandle = userHandle.toByteArray(),
             hasCounter = false,
         )
         val autofillViews = listOf(mockAutofillView)
 
         val authenticator: ClientFido2Authenticator = mockk {
-            coEvery { silentlyDiscoverCredentials(relyingPartyId) } returns autofillViews
+            coEvery {
+                silentlyDiscoverCredentials(
+                    relyingPartyId,
+                    userHandle.toByteArray(),
+                )
+            } returns autofillViews
         }
         every {
             clientFido2.authenticator(
@@ -1418,6 +1430,7 @@ class VaultSdkSourceTest {
             userId = userId,
             fido2CredentialStore = fido2CredentialStore,
             relyingPartyId = relyingPartyId,
+            userHandle = userHandle,
         )
 
         assertEquals(
@@ -1432,6 +1445,7 @@ class VaultSdkSourceTest {
             val userId = "userId"
             val fido2CredentialStore: Fido2CredentialStore = mockk()
             val relyingPartyId = "relyingPartyId"
+            val userHandle = "mockUserHandle"
 
             coEvery {
                 clientFido2
@@ -1439,7 +1453,10 @@ class VaultSdkSourceTest {
                         userInterface = Fido2CredentialSearchUserInterfaceImpl(),
                         credentialStore = fido2CredentialStore,
                     )
-                    .silentlyDiscoverCredentials(relyingPartyId)
+                    .silentlyDiscoverCredentials(
+                        relyingPartyId,
+                        userHandle.toByteArray(),
+                    )
             } throws BitwardenException.SilentlyDiscoverCredentials(
                 mockk<SilentlyDiscoverCredentialsException>("mockException"),
             )
@@ -1448,6 +1465,7 @@ class VaultSdkSourceTest {
                 userId = userId,
                 fido2CredentialStore = fido2CredentialStore,
                 relyingPartyId = relyingPartyId,
+                userHandle = userHandle,
             )
 
             assertTrue(result.isFailure)

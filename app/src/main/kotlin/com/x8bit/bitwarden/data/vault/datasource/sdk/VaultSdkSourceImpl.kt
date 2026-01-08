@@ -100,6 +100,7 @@ class VaultSdkSourceImpl(
                     is DeriveKeyConnectorException.WrongPassword -> {
                         DeriveKeyConnectorResult.WrongPasswordError
                     }
+
                     is DeriveKeyConnectorException.Crypto -> {
                         DeriveKeyConnectorResult.Error(error = ex)
                     }
@@ -129,15 +130,18 @@ class VaultSdkSourceImpl(
                 .enrollPinWithEncryptedPin(encryptedPin = encryptedPin)
         }
 
-    override suspend fun validatePin(
+    override suspend fun validatePinUserKey(
         userId: String,
         pin: String,
-        pinProtectedUserKey: String,
+        pinProtectedUserKeyEnvelope: String,
     ): Result<Boolean> =
         runCatchingWithLogs {
             getClient(userId = userId)
                 .auth()
-                .validatePin(pin = pin, pinProtectedUserKey = pinProtectedUserKey)
+                .validatePinProtectedUserKeyEnvelope(
+                    pin = pin,
+                    pinProtectedUserKeyEnvelope = pinProtectedUserKeyEnvelope,
+                )
         }
 
     override suspend fun getAuthRequestKey(
@@ -599,6 +603,7 @@ class VaultSdkSourceImpl(
         userId: String,
         fido2CredentialStore: Fido2CredentialStore,
         relyingPartyId: String,
+        userHandle: String?,
     ): Result<List<Fido2CredentialAutofillView>> = runCatchingWithLogs {
         getClient(userId)
             .platform()
@@ -607,7 +612,7 @@ class VaultSdkSourceImpl(
                 userInterface = Fido2CredentialSearchUserInterfaceImpl(),
                 credentialStore = fido2CredentialStore,
             )
-            .silentlyDiscoverCredentials(relyingPartyId)
+            .silentlyDiscoverCredentials(relyingPartyId, userHandle?.toByteArray())
     }
 
     override suspend fun makeUpdateKdf(

@@ -38,6 +38,7 @@ import com.x8bit.bitwarden.data.vault.datasource.sdk.model.InitializeCryptoResul
 import com.x8bit.bitwarden.data.vault.manager.model.VaultStateEvent
 import com.x8bit.bitwarden.data.vault.repository.model.VaultUnlockData
 import com.x8bit.bitwarden.data.vault.repository.model.VaultUnlockResult
+import com.x8bit.bitwarden.data.vault.repository.util.createWrappedAccountCryptographicState
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -761,15 +762,18 @@ class VaultLockManagerTest {
             vaultSdkSource.initializeCrypto(
                 userId = USER_ID,
                 request = InitUserCryptoRequest(
+                    accountCryptographicState = createWrappedAccountCryptographicState(
+                        privateKey = privateKey,
+                        securityState = null,
+                        signedPublicKey = null,
+                        signingKey = null,
+                    ),
                     userId = USER_ID,
                     kdfParams = MOCK_PROFILE.toSdkParams(),
                     email = MOCK_PROFILE.email,
-                    privateKey = privateKey,
                     method = InitUserCryptoMethod.DecryptedKey(
                         decryptedUserKey = userAutoUnlockKey,
                     ),
-                    signingKey = null,
-                    securityState = null,
                 ),
             )
         } returns InitializeCryptoResult.Success.asSuccess()
@@ -787,15 +791,18 @@ class VaultLockManagerTest {
             vaultSdkSource.initializeCrypto(
                 userId = USER_ID,
                 request = InitUserCryptoRequest(
+                    accountCryptographicState = createWrappedAccountCryptographicState(
+                        privateKey = privateKey,
+                        securityState = null,
+                        signedPublicKey = null,
+                        signingKey = null,
+                    ),
                     userId = USER_ID,
                     kdfParams = MOCK_PROFILE.toSdkParams(),
                     email = MOCK_PROFILE.email,
-                    privateKey = privateKey,
                     method = InitUserCryptoMethod.DecryptedKey(
                         decryptedUserKey = userAutoUnlockKey,
                     ),
-                    signingKey = null,
-                    securityState = null,
                 ),
             )
             trustedDeviceManager.trustThisDeviceIfNecessary(userId = USER_ID)
@@ -920,16 +927,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -953,12 +963,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -989,16 +1002,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
                 vaultSdkSource.initializeOrganizationCrypto(
@@ -1025,16 +1041,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1067,12 +1086,15 @@ class VaultLockManagerTest {
             }
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1105,16 +1127,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
                 vaultSdkSource.initializeOrganizationCrypto(
@@ -1141,16 +1166,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.AuthenticationError(error = error).asSuccess()
@@ -1165,12 +1193,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1191,16 +1222,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             }
@@ -1220,16 +1254,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1251,12 +1288,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1277,16 +1317,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             }
@@ -1313,16 +1356,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns error.asFailure()
@@ -1336,12 +1382,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1362,16 +1411,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             }
@@ -1391,16 +1443,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1421,12 +1476,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1447,16 +1505,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             }
@@ -1482,16 +1543,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1512,12 +1576,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1545,16 +1612,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             }
@@ -1655,16 +1725,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1684,12 +1757,15 @@ class VaultLockManagerTest {
             mutableVaultTimeoutStateFlow.value = VaultTimeout.ThirtyMinutes
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = InitUserCryptoMethod.Password(
                     password = masterPassword,
                     userKey = userKey,
@@ -1712,16 +1788,19 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = InitUserCryptoMethod.Password(
                             password = masterPassword,
                             userKey = userKey,
                         ),
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
                 vaultSdkSource.initializeOrganizationCrypto(
@@ -1754,13 +1833,16 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = initUserCryptoMethod,
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
             } returns InitializeCryptoResult.Success.asSuccess()
@@ -1784,12 +1866,15 @@ class VaultLockManagerTest {
             )
 
             val result = vaultLockManager.unlockVault(
+                accountCryptographicState = createWrappedAccountCryptographicState(
+                    privateKey = privateKey,
+                    securityState = null,
+                    signedPublicKey = null,
+                    signingKey = null,
+                ),
                 userId = USER_ID,
                 email = email,
                 kdf = kdf,
-                privateKey = privateKey,
-                signingKey = null,
-                securityState = null,
                 initUserCryptoMethod = initUserCryptoMethod,
                 organizationKeys = organizationKeys,
             )
@@ -1817,13 +1902,16 @@ class VaultLockManagerTest {
                 vaultSdkSource.initializeCrypto(
                     userId = USER_ID,
                     request = InitUserCryptoRequest(
+                        accountCryptographicState = createWrappedAccountCryptographicState(
+                            privateKey = privateKey,
+                            securityState = null,
+                            signedPublicKey = null,
+                            signingKey = null,
+                        ),
                         userId = USER_ID,
                         kdfParams = kdf,
                         email = email,
-                        privateKey = privateKey,
                         method = initUserCryptoMethod,
-                        signingKey = null,
-                        securityState = null,
                     ),
                 )
                 vaultSdkSource.initializeOrganizationCrypto(
@@ -1865,16 +1953,19 @@ class VaultLockManagerTest {
             vaultSdkSource.initializeCrypto(
                 userId = userId,
                 request = InitUserCryptoRequest(
+                    accountCryptographicState = createWrappedAccountCryptographicState(
+                        privateKey = privateKey,
+                        securityState = null,
+                        signedPublicKey = null,
+                        signingKey = null,
+                    ),
                     userId = userId,
                     kdfParams = kdf,
                     email = email,
-                    privateKey = privateKey,
                     method = InitUserCryptoMethod.Password(
                         password = masterPassword,
                         userKey = userKey,
                     ),
-                    signingKey = null,
-                    securityState = null,
                 ),
             )
         } coAnswers {
@@ -1883,12 +1974,15 @@ class VaultLockManagerTest {
         }
 
         vaultLockManager.unlockVault(
+            accountCryptographicState = createWrappedAccountCryptographicState(
+                privateKey = privateKey,
+                securityState = null,
+                signedPublicKey = null,
+                signingKey = null,
+            ),
             userId = userId,
             email = email,
             kdf = kdf,
-            privateKey = privateKey,
-            signingKey = null,
-            securityState = null,
             initUserCryptoMethod = InitUserCryptoMethod.Password(
                 password = masterPassword,
                 userKey = userKey,
@@ -1915,16 +2009,19 @@ class VaultLockManagerTest {
             vaultSdkSource.initializeCrypto(
                 userId = userId,
                 request = InitUserCryptoRequest(
+                    accountCryptographicState = createWrappedAccountCryptographicState(
+                        privateKey = privateKey,
+                        securityState = null,
+                        signedPublicKey = null,
+                        signingKey = null,
+                    ),
                     userId = userId,
                     kdfParams = kdf,
                     email = email,
-                    privateKey = privateKey,
                     method = InitUserCryptoMethod.Password(
                         password = masterPassword,
                         userKey = userKey,
                     ),
-                    signingKey = null,
-                    securityState = null,
                 ),
             )
         } returns InitializeCryptoResult.Success.asSuccess()
@@ -1936,12 +2033,15 @@ class VaultLockManagerTest {
         } returns true.asSuccess()
 
         val result = vaultLockManager.unlockVault(
+            accountCryptographicState = createWrappedAccountCryptographicState(
+                privateKey = privateKey,
+                securityState = null,
+                signedPublicKey = null,
+                signingKey = null,
+            ),
             userId = userId,
             email = email,
             kdf = kdf,
-            privateKey = privateKey,
-            signingKey = null,
-            securityState = null,
             initUserCryptoMethod = InitUserCryptoMethod.Password(
                 password = masterPassword,
                 userKey = userKey,
@@ -1954,16 +2054,19 @@ class VaultLockManagerTest {
             vaultSdkSource.initializeCrypto(
                 userId = userId,
                 request = InitUserCryptoRequest(
+                    accountCryptographicState = createWrappedAccountCryptographicState(
+                        privateKey = privateKey,
+                        securityState = null,
+                        signedPublicKey = null,
+                        signingKey = null,
+                    ),
                     userId = userId,
                     kdfParams = kdf,
                     email = email,
-                    privateKey = privateKey,
                     method = InitUserCryptoMethod.Password(
                         password = masterPassword,
                         userKey = userKey,
                     ),
-                    signingKey = null,
-                    securityState = null,
                 ),
             )
         }
